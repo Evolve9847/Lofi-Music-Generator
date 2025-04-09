@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lofi Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Lofi Music Generator 🎵</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <label>Upload your song (MP3):</label><br>
+            <input type="file" name="song" accept=".mp3" required><br><br>
+
+            <label>Select Preset:</label>
+            <select name="preset">
+                <option value="">-- None --</option>
+                <option value="chill" {% if form_data.preset == 'chill' %}selected{% endif %}>Chill</option>
+                <option value="vintage" {% if form_data.preset == 'vintage' %}selected{% endif %}>Vintage</option>
+                <option value="deepnight" {% if form_data.preset == 'deepnight' %}selected{% endif %}>Deep Night</option>
+            </select><br><br>
+
+            <label>Playback Speed:</label>
+            <input type="range" name="speed" min="0.5" max="1.5" step="0.1" value="{{ form_data.speed }}"><br>
+
+            <label>Pitch Shift:</label>
+            <input type="range" name="pitch" min="-12" max="12" value="{{ form_data.pitch }}"><br>
+
+            <label>Reverb:</label>
+            <input type="range" name="reverb" min="0" max="10" value="{{ form_data.reverb }}"><br><br>
+
+            <label>Extra FX:</label><br>
+            <input type="checkbox" name="fx" value="echo" {% if 'echo' in form_data.fx %}checked{% endif %}> Echo<br>
+            <input type="checkbox" name="fx" value="bass" {% if 'bass' in form_data.fx %}checked{% endif %}> Bass Boost<br>
+            <input type="checkbox" name="fx" value="distortion" {% if 'distortion' in form_data.fx %}checked{% endif %}> Distortion<br><br>
+
+            <label>
+                <input type="checkbox" name="rain" {% if form_data.rain %}checked{% endif %}> Add Rain FX 🌧️
+            </label><br>
+
+            <label>Rain Volume:</label>
+            <input type="range" name="rain_volume" min="0.0" max="2.0" step="0.1" value="{{ form_data.rain_volume }}"><br><br>
+
+            <label>
+                <input type="checkbox" name="karaoke" {% if form_data.karaoke %}checked{% endif %}> Karaoke Remover 🎤❌
+            </label><br><br>
+
+            <label>Volume:</label>
+            <input type="range" name="volume" min="0.5" max="2.0" step="0.1" value="{{ form_data.volume }}"><br><br>
+
+            <label>Enter Lyrics:</label><br>
+            <textarea name="lyrics" rows="4" cols="50">{{ form_data.lyrics }}</textarea><br><br>
+
+            <label>
+                <input type="checkbox" name="lyrics_only" {% if form_data.lyrics_only %}checked{% endif %}>
+                Show Only Lyrics
+            </label><br><br>
+
+            <button type="submit">Generate Lofi Track</button>
+        </form>
+
+        {% if preview_url %}
+            <h3>🎧 Real-Time Preview:</h3>
+            <audio controls>
+                <source src="{{ preview_url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        {% endif %}
+
+        {% if lyrics_only and lyrics_text %}
+            <h3>📝 Extracted Lyrics:</h3>
+            <pre>{{ lyrics_text }}</pre>
+        {% endif %}
+
+        {% if download_file %}
+            <br>
+            <a href="{{ url_for('download_file', filename=download_file) }}">
+                <button>⬇️ Export Final Track</button>
+            </a>
+        {% endif %}
+    </div>
+</body>
+</html>
