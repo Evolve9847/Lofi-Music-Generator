@@ -36,3 +36,14 @@ Transform your favorite songs into dreamy lofi versions with reverb, rain effect
 
 ## 📂 Project Structure
 
+`lofi-music-generator/ ├── app.py ├── requirements.txt ├── ui_preview.jpg ← Your UI screenshot here ├── static/ │ ├── uploads/ ← Uploaded audio files │ ├── processed/ ← Output after processing │ └── rain.mp3 ← Optional rain background sound ├── templates/ │ └── index.html ← HTML UI └── README.md`
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/lofi-music-generator.git
+cd lofi-music-generator
